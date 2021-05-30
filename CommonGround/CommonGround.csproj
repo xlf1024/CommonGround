@@ -91,9 +91,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DecompiledSources\" />
-    <Folder Include="GUI\" />
-    <Folder Include="Manager\" />
-    <Folder Include="Patches\" />
     <Folder Include="Resources\" />
     <Folder Include="Util\" />
   </ItemGroup>

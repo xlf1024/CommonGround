@@ -28,7 +28,7 @@ namespace CommonGround.LifeCycle
 
         [UsedImplicitly]
         public void OnSettingsUI(UIHelperBase helper) {
-            GUI.Settings.OnSettingsUI(helper);
+            GUI.ModSettings.OnSettingsUI(helper);
         }
 
     }
