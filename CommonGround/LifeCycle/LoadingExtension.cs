@@ -13,8 +13,6 @@ namespace CommonGround.LifeCycle
 
         public override void OnLevelUnloading()
         {
-            Log.Debug("LoadingExtention.OnLevelUnloading");
-            LifeCycle.OnLevelUnloading();
         }
     }
 }

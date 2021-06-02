@@ -5,9 +5,10 @@ namespace CommonGround.LifeCycle {
     using KianCommons;
     using System.Diagnostics;
     using UnityEngine.SceneManagement;
+    using CommonGround.Manager;
 
     public static class LifeCycle {
-        public static string HARMONY_ID = "CS.xlf1024.CommonGround";
+        public static string HARMONY_ID = "xlf1024.CommonGround";
         public static bool bHotReload = false;
 
         public static SimulationManager.UpdateMode UpdateMode => SimulationManager.instance.m_metaData.m_updateMode;
@@ -17,64 +18,28 @@ namespace CommonGround.LifeCycle {
         public static bool Loaded;
 
         public static void Enable() {
-            Log.Debug("Testing StackTrace:\n" + new StackTrace(true).ToString(), copyToGameLog: false);
-            KianCommons.UI.TextureUtil.EmbededResources = false;
-            HelpersExtensions.VERBOSE = false;
-            Loaded = false;
 
             HarmonyHelper.EnsureHarmonyInstalled();
-            LoadingManager.instance.m_simulationDataReady += SimulationDataReady; // load/update data
+            HarmonyHelper.DoOnHarmonyReady(() => HarmonyUtil.InstallHarmony(HARMONY_ID));
             if (HelpersExtensions.InGameOrEditor)
                 HotReload();
 
-            if(fastTestHarmony) HarmonyUtil.InstallHarmony(HARMONY_ID);
         }
-
-        const bool fastTestHarmony = false;
 
         public static void Disable() {
-            LoadingManager.instance.m_simulationDataReady -= SimulationDataReady;
-            Unload(); // in case of hot unload
-
-            if (fastTestHarmony) HarmonyUtil.UninstallHarmony(HARMONY_ID);
-        }
-
-        public static void OnLevelUnloading() {
-            bHotReload = false;
-            Unload(); // called when loading new game or exiting to main menu.
+            Unload();
         }
 
         public static void HotReload() {
             bHotReload = true;
-            SimulationDataReady();
-            OnLevelLoaded(Mode);
-        }
-
-        public static void SimulationDataReady() {
-            try {
-                //Log.Info($"LifeCycle.SimulationDataReady() called. mode={Mode} updateMode={UpdateMode}, scene={Scene}");
-                //System.Threading.Thread.Sleep(1000 * 50); //50 sec
-                //Log.Info($"LifeCycle.SimulationDataReady() after sleep");
-
-
-                HarmonyUtil.InstallHarmony(HARMONY_ID); // game config is checked in patch.
-
-                Loaded = true;
-                Log.Info("LifeCycle.SimulationDataReady() sucessful");
-            }
-            catch (Exception e){
-                Log.Exception(e);
-            }
+            TerrainDetailManager.ApplyTerrainDetail();
         }
 
         public static void OnLevelLoaded(LoadMode mode) {
-            // after level has been loaded.
-            if (Loaded) {
-            }
+            TerrainDetailManager.ApplyTerrainDetail();
         }
 
         public static void Unload() {
-            if (!Loaded) return; //protect against disabling from main menu.
             Log.Info("LifeCycle.Unload() called");
             HarmonyUtil.UninstallHarmony(HARMONY_ID);
             Loaded = false;
