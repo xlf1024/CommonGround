@@ -6,7 +6,7 @@ using System.Text;
 namespace CommonGround.Data {
     public enum AreaPreset {
         CenterTile,
-        //StartTile,
+        StartTile,
         Square25,
         Square49,
         Square81,

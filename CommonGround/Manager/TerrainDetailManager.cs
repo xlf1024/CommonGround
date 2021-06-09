@@ -19,16 +19,23 @@ namespace CommonGround.Manager {
             var gameAreaManager = Singleton<GameAreaManager>.instance;
             if (gameAreaManager.m_maxAreaCount < 81) gameAreaManager.m_maxAreaCount = 81;
             switch (ModSettings.settings.preset) {
-                case AreaPreset.Custom:
-                    for (int x = 0; x < 9; x++) {
-                        for (int z = 0; z < 9; z++) {
-                            if (ModSettings.settings.custom[x, z]) {
-                                Log.Debug("detailing patch (" + x + "|" + z + ")");
-                                Singleton<TerrainManager>.instance.SetDetailedPatch(x, z);
+                case AreaPreset.Custom: {
+                        for (int x = 0; x < 9; x++) {
+                            for (int z = 0; z < 9; z++) {
+                                if (ModSettings.settings.custom[x, z]) {
+                                    Log.Debug("detailing patch (" + x + "|" + z + ")");
+                                    Singleton<TerrainManager>.instance.SetDetailedPatch(x, z);
+                                }
                             }
                         }
+                        break;
                     }
-                    break;
+                case AreaPreset.StartTile: {
+                        Singleton<GameAreaManager>.instance.GetStartTile(out int x, out int z);
+                        Log.Debug("detailing patch (" + x + "|" + z + ")");
+                        Singleton<TerrainManager>.instance.SetDetailedPatch(x, z);
+                        break;
+                    }
                 default:
                     int xMin;
                     int xMax;
