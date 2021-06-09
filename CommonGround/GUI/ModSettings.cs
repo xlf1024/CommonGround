@@ -31,13 +31,13 @@ namespace CommonGround.GUI {
             var table = customGroupPanel.AddUIComponent<UITable>();
             table.Expand(9, 9);
             for (int x = 0; x < 9; x++) {
-                for (int y = 0; y < 9; y++) {
-                    customCheckBoxes[x, y] = table.GetCell(y, x).AddUIComponent<UICheckBoxExt>();
+                for (int z = 0; z < 9; z++) {
+                    customCheckBoxes[x, z] = table.GetCell(9-1-z, x).AddUIComponent<UICheckBoxExt>();
                     //customCheckBoxes[x, y].RemoveUIComponent(customCheckBoxes[x, y].label);
-                    UnityEngine.Object.Destroy(customCheckBoxes[x, y].label);
-                    customCheckBoxes[x, y].isChecked = settings.custom[x, y];
-                    customCheckBoxes[x, y].eventCheckChanged += (_, _) => OnSettingsChanged();
-                    customCheckBoxes[x, y].width = 20f;
+                    UnityEngine.Object.Destroy(customCheckBoxes[x, z].label);
+                    customCheckBoxes[x, z].isChecked = settings.custom[x, z];
+                    customCheckBoxes[x, z].eventCheckChanged += (_, _) => OnSettingsChanged();
+                    customCheckBoxes[x, z].width = 20f;
                 }
             }
             customGroup.AddButton("clear", () => {
@@ -74,8 +74,8 @@ namespace CommonGround.GUI {
                 customGroupPanel.parent.Hide();
             }
             for (int x = 0; x < 9; x++) {
-                for (int y = 0; y < 9; y++) {
-                    settings.custom[x, y] = customCheckBoxes[x, y].isChecked;
+                for (int z = 0; z < 9; z++) {
+                    settings.custom[x, z] = customCheckBoxes[x, z].isChecked;
                 }
             }
             settings.Serialize();
