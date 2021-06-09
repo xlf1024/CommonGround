@@ -40,13 +40,33 @@ namespace CommonGround.GUI {
                     customCheckBoxes[x, y].width = 20f;
                 }
             }
+            customGroup.AddButton("clear", () => {
+                foreach(var customCheckBox in customCheckBoxes) {
+                    customCheckBox.isChecked = false;
+                }
+                OnSettingsChanged();
+            });
             if (settings.preset != AreaPreset.Custom) customGroupPanel.parent.Hide();
 
             var text = ((helper as UIHelper).self as UIComponent).AddUIComponent<UILabel>();
             text.text = "Note: while the game is loaded, only increasing the detailed area will have an effect.";
 
+            //find settings window
+            var settingsWindow = (helper as UIHelper).self as UIComponent;
+            while (settingsWindow.parent is not null && !settingsWindow.name.EndsWith("OptionsPanel")) {
+                settingsWindow = settingsWindow.parent;
+            }
+            settingsWindow.eventVisibilityChanged += (_, visible) => {
+                // only apply any changes as soon as the settings are closed
+                if (!visible) {
+                    Log.Debug("CommonGround: settings window closed");
+                    if (HelpersExtensions.InGameOrEditor) TerrainDetailManager.ApplyTerrainDetail();
+                }
+            };
+
         }
         internal static void OnSettingsChanged() {
+            Log.Debug("CommonGround: OnSettingsChanged");
             settings.preset = (AreaPreset)presetDropDown.selectedIndex;
             if (settings.preset == AreaPreset.Custom) {
                 customGroupPanel.parent.Show();
@@ -59,9 +79,6 @@ namespace CommonGround.GUI {
                 }
             }
             settings.Serialize();
-            if (HelpersExtensions.InGameOrEditor) {
-                TerrainDetailManager.ApplyTerrainDetail();
-            }
         }
     }
 }
