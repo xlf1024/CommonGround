@@ -46,9 +46,9 @@ namespace CommonGround.Manager {
                 case AreaPreset.AdjacentToPurchased: {
                         for (int x = 0; x < 9; x++) {
                             for (int z = 0; z < 9; z++) {
-                                for (int x2 = Mathf.Max(x - 1, 0); x2 <= x + 1 && x2 < 9; x2++) {
-                                    for (int z2 = Mathf.Max(z - 1, 0); z2 <= z + 1 && z2 < 9; z2++) {
-                                        if (gameAreaManager.IsUnlocked(x2, z2)) {
+                                for (int x2 = Mathf.Max(x - 1, 2); x2 <= x + 1 && x2 < 7; x2++) {
+                                    for (int z2 = Mathf.Max(z - 1, 2); z2 <= z + 1 && z2 < 7; z2++) {
+                                        if (gameAreaManager.IsUnlocked(x2-2, z2-2)) {//offset 81tiles to 25tiles
                                             Log.Debug("detailing patch (" + x + "|" + z + ")");
                                             terrainManager.SetDetailedPatch(x, z);
                                             //continue to x,z loops
