@@ -22,7 +22,7 @@ namespace CommonGround.LifeCycle {
         public static void Enable() {
 
             HarmonyHelper.EnsureHarmonyInstalled();
-            HarmonyHelper.DoOnHarmonyReady(() => HarmonyUtil.InstallHarmony(HARMONY_ID));
+            HarmonyHelper.DoOnHarmonyReady(() => HarmonyUtil.InstallHarmony(HARMONY_ID, null));
             var loadingManager = Singleton<LoadingManager>.instance;
             if (loadingManager.m_loadingComplete && !loadingManager.m_currentlyLoading)
                 HotReload();
