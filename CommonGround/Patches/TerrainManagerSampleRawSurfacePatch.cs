@@ -19,7 +19,6 @@ namespace CommonGround.Patches {
     class SampleRawSurfacePatch {
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codesEnumerable) {
             var codes = codesEnumerable.ToList();
-            CodeInstruction numLoadInstruction = null;
             for(int i = 0; i<codes.Count; i++) {
                 var code = codes[i];
                 if (code.LoadsField(typeof(TerrainManager).GetField("m_rawSurface",ReflectionHelpers.ALL))) {
