@@ -7,6 +7,7 @@ namespace CommonGround.LifeCycle {
     using UnityEngine.SceneManagement;
     using CommonGround.Manager;
     using CommonGround.GUI;
+    using ColossalFramework;
 
     public static class LifeCycle {
         public static string HARMONY_ID = "xlf1024.CommonGround";
@@ -22,7 +23,8 @@ namespace CommonGround.LifeCycle {
 
             HarmonyHelper.EnsureHarmonyInstalled();
             HarmonyHelper.DoOnHarmonyReady(() => HarmonyUtil.InstallHarmony(HARMONY_ID));
-            if (HelpersExtensions.InGameOrEditor)
+            var loadingManager = Singleton<LoadingManager>.instance;
+            if (loadingManager.m_loadingComplete && !loadingManager.m_currentlyLoading)
                 HotReload();
 
         }

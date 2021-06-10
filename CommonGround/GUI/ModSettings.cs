@@ -65,7 +65,7 @@ namespace CommonGround.GUI {
             // only apply any changes as soon as the settings are closed
             if (!visible) {
                 Log.Debug("CommonGround: settings window closed");
-                if (HelpersExtensions.InGameOrEditor) TerrainDetailManager.ApplyTerrainDetail();
+                TerrainDetailManager.ApplyTerrainDetail();
             }
         }
         internal static void OnSettingsChanged() {

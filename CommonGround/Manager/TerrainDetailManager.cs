@@ -11,6 +11,8 @@ using CommonGround.Data;
 namespace CommonGround.Manager {
     public static class TerrainDetailManager {
         public static void ApplyTerrainDetail() {
+            var loadingManager = Singleton<LoadingManager>.instance;
+            if (!loadingManager.m_loadingComplete || loadingManager.m_currentlyLoading) return;
             var simulationManager = Singleton<SimulationManager>.instance;
             if (Thread.CurrentThread != simulationManager.m_simulationThread) {
                 simulationManager.AddAction(ApplyTerrainDetail);
