@@ -20,6 +20,7 @@ namespace CommonGround.GUI {
         private static UIDropDown presetDropDown;
         private static UIPanel customGroupPanel;
         private static UICheckBoxExt[,] customCheckBoxes = new UICheckBoxExt[9, 9];
+        private static UIComponent settingsWindow = null;
         static ModSettings() {
             settings = CommonGroundConfig.Deserialize() ?? new CommonGroundConfig();
         }
@@ -52,18 +53,20 @@ namespace CommonGround.GUI {
             text.text = "Note: while the game is loaded, only increasing the detailed area will have an effect.";
 
             //find settings window
-            var settingsWindow = (helper as UIHelper).self as UIComponent;
+            settingsWindow = (helper as UIHelper).self as UIComponent;
             while (settingsWindow.parent is not null && !settingsWindow.name.EndsWith("OptionsPanel")) {
                 settingsWindow = settingsWindow.parent;
             }
-            settingsWindow.eventVisibilityChanged += (_, visible) => {
-                // only apply any changes as soon as the settings are closed
-                if (!visible) {
-                    Log.Debug("CommonGround: settings window closed");
-                    if (HelpersExtensions.InGameOrEditor) TerrainDetailManager.ApplyTerrainDetail();
-                }
-            };
 
+            settingsWindow.eventVisibilityChanged += OnSettingsWindowVisibilityChanged;
+        }
+
+        internal static void OnSettingsWindowVisibilityChanged(UIComponent _, bool visible){
+            // only apply any changes as soon as the settings are closed
+            if (!visible) {
+                Log.Debug("CommonGround: settings window closed");
+                if (HelpersExtensions.InGameOrEditor) TerrainDetailManager.ApplyTerrainDetail();
+            }
         }
         internal static void OnSettingsChanged() {
             Log.Debug("CommonGround: OnSettingsChanged");
@@ -79,6 +82,10 @@ namespace CommonGround.GUI {
                 }
             }
             settings.Serialize();
+        }
+
+        internal static void RemoveEventListeners() {
+            settingsWindow.eventVisibilityChanged -= OnSettingsWindowVisibilityChanged;
         }
     }
 }

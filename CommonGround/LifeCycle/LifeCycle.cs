@@ -6,6 +6,7 @@ namespace CommonGround.LifeCycle {
     using System.Diagnostics;
     using UnityEngine.SceneManagement;
     using CommonGround.Manager;
+    using CommonGround.GUI;
 
     public static class LifeCycle {
         public static string HARMONY_ID = "xlf1024.CommonGround";
@@ -42,6 +43,7 @@ namespace CommonGround.LifeCycle {
         public static void Unload() {
             Log.Info("LifeCycle.Unload() called");
             HarmonyUtil.UninstallHarmony(HARMONY_ID);
+            ModSettings.RemoveEventListeners();
             Loaded = false;
         }
     }

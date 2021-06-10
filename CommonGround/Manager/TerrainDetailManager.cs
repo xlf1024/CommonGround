@@ -18,6 +18,7 @@ namespace CommonGround.Manager {
             }
             var gameAreaManager = Singleton<GameAreaManager>.instance;
             if (gameAreaManager.m_maxAreaCount < 81) gameAreaManager.m_maxAreaCount = 81;
+            Log.Debug("Common ground: Applying terrain detail; preset: " + ModSettings.settings.preset.ToString());
             switch (ModSettings.settings.preset) {
                 case AreaPreset.Custom: {
                         for (int x = 0; x < 9; x++) {
