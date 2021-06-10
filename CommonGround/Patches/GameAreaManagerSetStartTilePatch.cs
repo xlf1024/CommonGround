@@ -9,14 +9,18 @@ namespace CommonGround.Patches {
     class SetStartTilePatch {
 
         [HarmonyPatch(new Type[] { typeof(int) })]
+        [HarmonyPostfix]
         static void Postfix1Arg() {
-            if (GUI.ModSettings.settings.preset == Data.AreaPreset.StartTile) Manager.TerrainDetailManager.ApplyTerrainDetail(); ;
+            Log.Debug("SetStartTile(int) postfix");
+            if (GUI.ModSettings.settings.preset == Data.AreaPreset.StartTile) Manager.TerrainDetailManager.ApplyTerrainDetail();
         }
 
 
         [HarmonyPatch(new Type[] { typeof(int), typeof(int) })]
+        [HarmonyPostfix]
         static void Postfix2Arg() {
-            if (GUI.ModSettings.settings.preset == Data.AreaPreset.StartTile) Manager.TerrainDetailManager.ApplyTerrainDetail(); ;
+            Log.Debug("SetStartTile(int,int) postfix");
+            if (GUI.ModSettings.settings.preset == Data.AreaPreset.StartTile) Manager.TerrainDetailManager.ApplyTerrainDetail();
         }
     }
 }
