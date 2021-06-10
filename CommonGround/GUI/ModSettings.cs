@@ -50,7 +50,7 @@ namespace CommonGround.GUI {
             if (settings.preset != AreaPreset.Custom) customGroupPanel.parent.Hide();
 
             var text = ((helper as UIHelper).self as UIComponent).AddUIComponent<UILabel>();
-            text.text = "Note: while the game is loaded, only increasing the detailed area will have an effect.";
+            text.text = "Note: while the game is loaded, only increasing the detailed area will have an effect.\nChanges will be applied once you close the settings window.";
 
             //find settings window
             settingsWindow = (helper as UIHelper).self as UIComponent;

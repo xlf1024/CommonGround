@@ -10,6 +10,7 @@ namespace CommonGround.Data {
         Square25,
         Square49,
         Square81,
+        AdjacentToPurchased,
         Custom
     }
 }

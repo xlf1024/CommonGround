@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using CommonGround.GUI;
 using CommonGround.Data;
+using UnityEngine;
 
 namespace CommonGround.Manager {
     public static class TerrainDetailManager {
@@ -19,6 +20,7 @@ namespace CommonGround.Manager {
                 return;
             }
             var gameAreaManager = Singleton<GameAreaManager>.instance;
+            var terrainManager = Singleton<TerrainManager>.instance;
             if (gameAreaManager.m_maxAreaCount < 81) gameAreaManager.m_maxAreaCount = 81;
             Log.Debug("Common ground: Applying terrain detail; preset: " + ModSettings.settings.preset.ToString());
             switch (ModSettings.settings.preset) {
@@ -27,16 +29,36 @@ namespace CommonGround.Manager {
                             for (int z = 0; z < 9; z++) {
                                 if (ModSettings.settings.custom[x, z]) {
                                     Log.Debug("detailing patch (" + x + "|" + z + ")");
-                                    Singleton<TerrainManager>.instance.SetDetailedPatch(x, z);
+                                    terrainManager.SetDetailedPatch(x, z);
                                 }
                             }
                         }
                         break;
                     }
                 case AreaPreset.StartTile: {
-                        Singleton<GameAreaManager>.instance.GetStartTile(out int x, out int z);
+                        gameAreaManager.GetStartTile(out int x, out int z);
+                        x += 2;
+                        z += 2;
                         Log.Debug("detailing patch (" + x + "|" + z + ")");
-                        Singleton<TerrainManager>.instance.SetDetailedPatch(x, z);
+                        terrainManager.SetDetailedPatch(x, z);
+                        break;
+                    }
+                case AreaPreset.AdjacentToPurchased: {
+                        for (int x = 0; x < 9; x++) {
+                            for (int z = 0; z < 9; z++) {
+                                for (int x2 = Mathf.Max(x - 1, 0); x2 <= x + 1 && x2 < 9; x2++) {
+                                    for (int z2 = Mathf.Max(z - 1, 0); z2 <= z + 1 && z2 < 9; z2++) {
+                                        if (gameAreaManager.IsUnlocked(x2, z2)) {
+                                            Log.Debug("detailing patch (" + x + "|" + z + ")");
+                                            terrainManager.SetDetailedPatch(x, z);
+                                            //continue to x,z loops
+                                            x2 = Int32.MaxValue;
+                                            z2 = Int32.MaxValue;
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         break;
                     }
                 default:
@@ -79,7 +101,7 @@ namespace CommonGround.Manager {
                     for (int x = xMin; x <= xMax; x++) {
                         for (int z = zMin; z <= zMax; z++) {
                             Log.Debug("detailing patch (" + x + "|" + z + ")");
-                            Singleton<TerrainManager>.instance.SetDetailedPatch(x, z);
+                            terrainManager.SetDetailedPatch(x, z);
                         }
                     }
                     break;
