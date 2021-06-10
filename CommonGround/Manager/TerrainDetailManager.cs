@@ -52,8 +52,8 @@ namespace CommonGround.Manager {
                                             Log.Debug("detailing patch (" + x + "|" + z + ")");
                                             terrainManager.SetDetailedPatch(x, z);
                                             //continue to x,z loops
-                                            x2 = Int32.MaxValue;
-                                            z2 = Int32.MaxValue;
+                                            x2 = int.MaxValue - 1;//avoid overflow
+                                            z2 = int.MaxValue - 1;
                                         }
                                     }
                                 }
